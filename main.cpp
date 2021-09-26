@@ -16,7 +16,7 @@ int main() {
 	const int amountOfFramesToSmudge = 3;
 
 	auto buffer = std::array<cv::Mat, amountOfFramesToSmudge>();
-	buffer.fill(cv::Mat(720, 1280, CV_8UC1));
+	buffer.fill(cv::Mat(720, 1280, CV_8UC1, cv::Scalar(0)));
 	using BufferType = uint8_t;
 
 	for( ; ; ) {
