@@ -28,9 +28,9 @@ int main() {
 
 		Canny(frame, currentFrameEdges, 400, 600, 5, true);
 
-		std::rotate(buffer.rbegin(), buffer.rbegin() + 1, buffer.rend());
+		std::rotate(buffer.begin(), buffer.begin() + 1, buffer.end());
 
-		buffer[amountOfFramesToSmudge-1]  = currentFrameEdges / static_cast<float>(static_cast<BufferType>(-1));
+		buffer[amountOfFramesToSmudge-1]  = currentFrameEdges.clone() / static_cast<float>(static_cast<BufferType>(-1));
 
 		cv::Mat finalEdges = buffer[0].clone();
 
@@ -53,10 +53,6 @@ int main() {
 		cv::Mat twoHalfs(frame.rows, frame.cols, frame.type());
 		halfBGR.copyTo(twoHalfs(cv::Rect(0, 0, frame.cols / 2, frame.rows)));
 		halfCanny.copyTo(twoHalfs(cv::Rect(twoHalfs.cols / 2, 0, twoHalfs.cols / 2, twoHalfs.rows)));
-
-		result.release();
-		finalEdges.release();
-		frame.release();
 
 		cv::imshow(windowName, twoHalfs);
 		cv::waitKey(20); // waits to display frame
