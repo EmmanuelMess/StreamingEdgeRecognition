@@ -20,6 +20,9 @@ int main() {
 	using BufferType = uint8_t;
 
 	for( ; ; ) {
+		auto startTicks = cv::getTickCount();
+		auto beginTime = std::chrono::high_resolution_clock::now();
+
 		capture >> frame;
 		if(frame.empty())
 			break;
@@ -53,6 +56,14 @@ int main() {
 		cv::Mat twoHalfs(frame.rows, frame.cols, frame.type());
 		halfBGR.copyTo(twoHalfs(cv::Rect(0, 0, frame.cols / 2, frame.rows)));
 		halfCanny.copyTo(twoHalfs(cv::Rect(twoHalfs.cols / 2, 0, twoHalfs.cols / 2, twoHalfs.rows)));
+
+		auto endTicks = cv::getTickCount();
+		auto endTime = std::chrono::high_resolution_clock::now();
+
+		auto ticks = static_cast<double>(endTicks - startTicks) / cv::getTickFrequency();
+		auto time = std::chrono::duration_cast<std::chrono::milliseconds>(endTime-beginTime).count();
+
+		std::cout << "Ticks: " << ticks << " Time: " << time <<  "ms\n";
 
 		cv::imshow(windowName, twoHalfs);
 		cv::waitKey(20); // waits to display frame
